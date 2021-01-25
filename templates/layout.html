@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>{% block title %}Flask App{% endblock %}</title>
+  <meta name="description" content="{% block description %}Docker Example: Python Flask App{% endblock %}">
+
+  <base href="">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/png" sizes="192x192" href="images/android-chrome-192x192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="images/android-chrome-512x512.png">
+  <link rel="apple-touch-icon" type="image/png" href="images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+  <link rel="manifest" href="images/site.webmanifest.json">
+  <meta name="theme-color" content="#ffffff">
+</head>
+
+<body>
+  <div id="content">{% block content %}{% endblock %}</div>
+
+  <div id="footer">
+      {% block footer %}
+      Copyright &copy; Christopher Peisert. All rights reserved.
+      {% endblock footer %}
+  </div>
+</body>
+
+</html>

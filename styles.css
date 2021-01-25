@@ -1,0 +1,47 @@
+/*****************************************************************************
+ Global CSS Styles
+ *****************************************************************************/
+html,
+body {
+  background-color: rgb(255, 254, 247) !important;
+  border: 0 !important;
+  margin: 20px 20px 20px 15px !important;
+  padding: 0 !important;
+  font-family: -apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue",Arial,sans-serif;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+p {
+  font-family: Georgia,serif;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  line-height: 20px;
+  margin-bottom: 1em;
+  margin-top: 1em;
+}
+
+.app-name {
+  color: rgb(0, 131, 238) !important;
+  font-size: large;
+}
+
+#footer {
+  position:absolute;
+  bottom:30px;
+  width:90%;
+}
+
+th {
+  font-weight: bold;
+  text-align: left;
+}
+
+td {
+  padding-left: 3px;
+}
+
+* {
+  box-sizing: border-box;
+}

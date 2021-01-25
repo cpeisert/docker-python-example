@@ -1,0 +1,51 @@
+{
+  "name": "docker-python-example",
+  "description": "Example Python Flask app packaged in a Docker Linux container.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cpeisert/docker-python-example"
+  },
+  "bugs": {
+    "url": "https://github.com/cpeisert/docker-python-example/issues"
+  },
+  "author": "Christopher Peisert",
+  "license": "See LICENSE",
+
+  "app_name": "docker-python-example",
+  "version": "0.0.1",
+  "docker_id": "ldp2016",
+  "private_port": "8888",
+  "public_port": "8000",
+
+  "scripts": {
+    "app.build": "docker build --rm -t $npm_package_app_name:v$npm_package_version --build-arg app_name=$npm_package_app_name --build-arg version=$npm_package_version --build-arg private_port=$npm_package_private_port --build-arg public_port=$npm_package_public_port .",
+    "app.build.dev": "docker build --rm -t $npm_package_app_name:v$npm_package_version --build-arg production=False --build-arg debug=True --build-arg app_name=$npm_package_app_name --build-arg version=$npm_package_version --build-arg private_port=$npm_package_private_port --build-arg public_port=$npm_package_public_port .",
+    "app.local.werkzeug": "python main.py",
+    "app.local.gunicorn": "python create_gunicorn_conf.py --bind=127.0.0.1:$npm_package_private_port && gunicorn -c gunicorn.conf.py main:app",
+    "app.push": "npm run app.build && npm run docker.login && npm run _app.tag-image && npm run _app.push-image-to-registry && npm run docker.prune",
+    "app.run": "docker run --detach --publish $npm_package_public_port:$npm_package_private_port --name $npm_package_app_name $npm_package_app_name:v$npm_package_version",
+    "app.serve": "if [ \"$(curl -Is localhost:$npm_package_public_port | head -1)\" = '' ] ; then npm run _app.prune.build.run ; else echo $npm_package_app_name is already running on http://localhost:$npm_package_public_port. To rebuild, first shutdown using command: npm run app.shutdown ; fi",
+    "app.serve.dev": "if [ \"$(curl -Is localhost:$npm_package_public_port | head -1)\" = '' ] ; then npm run _app.prune.build.run.dev ; else echo $npm_package_app_name is already running on http://localhost:$npm_package_public_port. To rebuild, first shutdown using command: npm run app.shutdown ; fi",
+    "app.shutdown": "npm run _app.docker-rm-container",
+    "_app.docker-rm-container": "python ./tools/docker_rm_container.py --container=$npm_package_app_name",
+    "_app.push-image-to-registry": "docker push $npm_package_docker_id/$npm_package_app_name:v$npm_package_version &",
+    "_app.prune.build.run": "npm run docker.prune && npm run app.build && npm run app.run",
+    "_app.prune.build.run.dev": "npm run docker.prune && npm run app.build.dev && npm run app.run",
+    "_app.tag-image": "docker tag $npm_package_app_name:v$npm_package_version $npm_package_docker_id/$npm_package_app_name:v$npm_package_version",
+
+    "check-env": "node -e 'console.log(process.env)' | grep npm",
+
+    "docker.login": "docker login -u $npm_package_docker_id",
+    "docker.prune": "docker system prune -f",
+    "docker.stop-containers": "docker container ls -aq | xargs --no-run-if-empty docker stop $(docker ps -a -q)",
+
+    "pip.upgrade": "pip install pip --upgrade",
+    "requirements.freeze": "pip freeze > requirements.txt",
+    "requirements.install": "npm run pip.upgrade && pip install -r requirements.txt",
+    "requirements.upgrade": "npm run pip.upgrade && pip install -r requirements.txt --upgrade"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+  }
+}

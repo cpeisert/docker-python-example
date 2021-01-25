@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h1 class="app-name">Docker Example: Python Flask App</h1>
+
+<table>
+  <tr>
+    <th>App version</th>
+    <td>{{ version }}</td>
+  </tr>
+  <tr>
+    <th>Environment</th>
+    <td>{{ environment }}</td>
+  </tr>
+  <tr>
+    <th>Private port</th>
+    <td>{{ private_port }}</td>
+  </tr>
+  <tr>
+    <th>Public port</th>
+    <td>{{ public_port }}</td>
+  </tr>
+  <tr>
+    <th>Debug mode</th>
+    <td>{{ debug }}</td>
+  </tr>
+</table>
+
+{% endblock %}
