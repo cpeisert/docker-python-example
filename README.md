@@ -6,9 +6,7 @@ app in a Linux [Docker](https://www.docker.com/) container and covers the follow
 - Passing arguments to the Docker build process (for example, app version and environment).
 - Serving the Flask app using [Gunicorn](https://gunicorn.org/) WSGI server running inside a Docker
   container.
-- Deploying the Docker container to the cloud:
-  - Amazon Web Services (AWS)
-  - Microsoft Azure
+- Pushing the Docker image to Docker Hub
 - Testing the Flask app locally without using Docker:
   - Default Werkzeug HTTP server that comes bundled with Flask
   - Gunicorn WSGI HTTP server
@@ -22,6 +20,10 @@ app in a Linux [Docker](https://www.docker.com/) container and covers the follow
 The Docker image of this project is available on Docker Hub at
 [ldp2016 / docker-python-example](https://hub.docker.com/repository/docker/ldp2016/docker-python-example).
 
+For information on deploying Docker containers to Microsoft Azure ACI and Amazon ECS, see:
+  - [Deploying Docker containers on Azure](https://docs.docker.com/cloud/aci-integration/)
+  - [Deploying Docker containers on ECS](https://docs.docker.com/cloud/ecs-integration/)
+
 
 # Table of Contents
 
@@ -29,8 +31,6 @@ The Docker image of this project is available on Docker Hub at
 - [Notes on using npm scripts](#notes-on-npm-scripts)
 - [Quick Start](#quick-start)
 - [How to push the image to Docker Hub](#how-to-push-the-image-to-docker-hub)
-- [How to run the Docker container on AWS](#how-to-run-the-docker-container-on-aws)
-- [How to run the Docker container on Azure](#how-to-run-the-docker-container-on-azure)
 - [How to run the app locally without Docker](#how-to-run-the-app-locally-without-docker)
 
 
@@ -120,7 +120,7 @@ $ docker run --detach --publish 8000:8888 --name docker-python-example docker-py
   ```
 
 - Test JSON response:
-  - Visit: [http://localhost:8000/app-info](http://localhost:8000/app-info) to get the app name.
+  - Visit: [http://localhost:8000/app-info](http://localhost:8000/app-info) to get the app info.
 
 - To see the list of running Docker containers, use:
 ```
@@ -196,22 +196,6 @@ $ npm run app.push
 ```
 
 - If the process stalls after pushing the image, press Enter.
-
-
-# How to run the Docker container on AWS
-
-## Step 1: Install the AWS CLI version 2
-
-- [Install AWS CLI version 2](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
-
-
-
-# How to run the Docker container on Azure
-
-## Step 1: Install the Azure CLI
-
-- [Install Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
-
 
 
 # How to run the app locally without Docker
