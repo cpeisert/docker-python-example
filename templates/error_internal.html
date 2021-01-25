@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block title %}{{ code }} Internal Error{% endblock %}
+{% block description %}Error {{ code }} - Internal Error{% endblock %}
+{% block content %}
+  <h1>{{ code }} Internal Error</h1>
+
+  <p>An internal error has occurred. Please contact the system administrator.</p>
+
+  <p>
+  <b>Information for the system administrator.</b><br/>
+  Error type: {{ error_type }}<br/>
+  Error description: {{ description }}<br/>
+
+  <p><a href="/">Return to home page.</a></p>
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block title %}{{ code }} {{ error_type }}{% endblock %}
+{% block description %}HTTP Error {{ code }} - {{ error_type }}{% endblock %}
+{% block content %}
+  <h1>{{ code }} {{ error_type }}</h1>
+
+  <p>{{ description }}</p>
+  <p><a href="/">Return to home page.</a></p>
+{% endblock %}

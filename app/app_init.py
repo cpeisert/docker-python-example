@@ -49,47 +49,39 @@ def configure_flask_app(flask_app: Flask):
     # Note that the order of the handlers does not matter.
     #
 
-    @flask_app.errorhandler(Unauthorized)
-    def unauthorized_handler(e: HTTPException):
-        log_exception(e)
-        return render_template("401.html"), 401
-
-    @flask_app.errorhandler(Forbidden)
-    def forbidden_handler(e: HTTPException):
-        log_exception(e)
-        return render_template("403.html"), 403
-
-    @flask_app.errorhandler(NotFound)
-    def page_not_found_handler(e: HTTPException):
-        log_exception(e)
-        return render_template("404.html"), 404
-
-    @flask_app.errorhandler(RequestTimeout)
-    def request_timeout_handler(e: HTTPException):
-        log_exception(e)
-        return render_template("408.html"), 408
-
-    @flask_app.errorhandler(ImATeapot)
-    def i_am_a_teapot_handler(e: HTTPException):
-        log_exception(e)
-        return render_template("418.html"), 418
-
     @flask_app.errorhandler(HTTPException)
     def http_exception_handler(e: HTTPException):
         """Handle Werkzeug HttpExceptions."""
         log_exception(e)
-        return json_utils.json_response(
-            json_data={"error": f"HTTP error {e.code}"},
-            status_code=e.code,
-            response_headers=cors_utils.get_cors_headers(request))
+        return render_template(
+            "error_http.html",
+            error_type=type(e).__name__,
+            description=e.description,
+            code=e.code), e.code
+
+        #
+        # Alternatively, return a JSON response.
+        #
+        # return json_utils.json_response(
+        #     json_data={"error": f"HTTP error {e.code}"},
+        #     status_code=e.code,
+        #     response_headers=cors_utils.get_cors_headers(request))
 
     @flask_app.errorhandler(Exception)
     def generic_exception_handler(e: Exception):
         log_exception(e)
-        return json_utils.json_response(
-            json_data={"error": "An internal error occurred."},
-            status_code=500,
-            response_headers=cors_utils.get_cors_headers(request))
+        return render_template(
+            "error_internal.html",
+            error_type=type(e).__name__,
+            description=_get_error_description(e),
+            code=500), 500
+        #
+        # Alternatively, return a JSON response.
+        #
+        # return json_utils.json_response(
+        #     json_data={"error": "An internal error occurred."},
+        #     status_code=500,
+        #     response_headers=cors_utils.get_cors_headers(request))
 
 
 def log_exception(e: Exception):
@@ -98,16 +90,20 @@ def log_exception(e: Exception):
     if env.debug:
         stack_trace = "\n" + traceback.format_exc()
 
-    http_status_code = ""
-    error_description = ""
-    if isinstance(e, HTTPException):
-        http_status_code = f"({e.code})"
-        if e.description:
-            error_description = " - " + e.description
-    elif hasattr(e, "args"):
-        error_description = " - " + e.args[0]
+    error_description = f" - {_get_error_description(e)}"
 
+    http_status_code = ""
+    if isinstance(e, HTTPException):
+        http_status_code = f"{e.code} "
 
     logger = logging.getLogger()
-    message = f"{error_name}{http_status_code}{error_description}{stack_trace}"
+    message = f"{http_status_code}{error_name}{error_description}{stack_trace}"
     logger.log(level=logging.ERROR, msg=message)
+
+
+def _get_error_description(e: Exception):
+    if isinstance(e, HTTPException):
+        return e.description
+    elif hasattr(e, "args"):
+        return e.args[0]
+    return ""
