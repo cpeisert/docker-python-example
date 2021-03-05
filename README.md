@@ -54,15 +54,15 @@ For information on deploying Docker containers to Microsoft Azure ACI and Amazon
   npm run <npm script name>
   ```
 
-- npm scripts export each entry of "package.json" as an environment variable. To see the list of
-  both "package" and "npm config" environment variables, run the command:
+- npm scripts export each entry of the `config` object within "package.json" as an environment
+  variable. To see the list of "package" environment variables, run the command:
   ```
   npm run check-env
   ```
 
-- The "package" environment variables may be referenced in scripts using the syntax
-  `$npm_package_<KEY_NAME>`, where <KEY_NAME> is a JSON key from "package.json". Each JSON nesting
-  level is separated by an underscore (`_`).
+- The "package" `config` environment variables may be referenced in scripts using the syntax
+  `$npm_package_config_<KEY_NAME>`, where <KEY_NAME> is a JSON key from the "package.json" `config`
+  object. Each JSON nesting level is separated by an underscore (`_`).
 
 - The primary npm scripts are:
   - `app.serve` - removes unused Docker data, builds the Docker image for a production environment,
